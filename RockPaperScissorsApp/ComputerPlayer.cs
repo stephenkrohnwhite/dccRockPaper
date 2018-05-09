@@ -12,10 +12,17 @@ namespace RockPaperScissorsApp
         {
             this.name = name;
         }
+        public int RandomValue()
+        {
+            Random rdm = new Random();
+            int randomValue = rdm.Next(0, 5);
+            return randomValue;
+        }
         public override int MakeMove()
         {
-            
-            throw new NotImplementedException();
+            int value = RandomValue();
+            return value;
+            //throw new NotImplementedException();
         }
     }
 }

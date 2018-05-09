@@ -24,49 +24,49 @@ namespace RockPaperScissorsApp
             string move = Console.ReadLine();
             return move.ToLower();
         }
-        public bool Validator(string input)
+        public bool Validator(string input, List<string> options)
         {
-            switch(input)
+
+
+            if (options.Contains(input))
             {
-                case "rock":
-                case "paper":
-                case "scissors":
-                case "lizard":
-                case "spock":
-                    return true;
-                default:
-                    Console.WriteLine("Please enter a valid selection");
-                    return false;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Please enter a valid selection");
+                return false;
             }
         }
-        public int NumberAssign(string input)
+
+        public int NumberAssign(string input, List<string> options)
         {
-            switch(input)
+            for (int i = 0; i < options.Count; i++)
             {
-                case "rock":
-                    return 0;
-                case "paper":
-                    return 1;
-                case "scissors":
-                    return 2;
-                case "lizard":
-                    return 3;
-                case "spock":
-                    return 4;
-                default:
-                    return 0;
+                if (input == options[i])
+                {
+                    int result = i;
+                    return result;
+                }
+
             }
+            return 0;
         }
+
         public override int MakeMove()
         {
             string move = GetMove();
-            if (Validator(move) == true)
+            if (Validator(move, base.optionsList) == true)
             {
-                int numberScore = NumberAssign(move);
+                int numberScore = NumberAssign(move, base.optionsList);
                 return numberScore;
             }
-            else MakeMove();
-            return 0;
+            else
+            {
+                return MakeMove();
+            }
         }
+
+
     }
 }
