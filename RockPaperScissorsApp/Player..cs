@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace RockPaperScissorsApp
 {
-    class Player
+    abstract class Player
     {
+        public string name;
+    public abstract int MakeMove();
     }
 }

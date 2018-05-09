@@ -8,5 +8,14 @@ namespace RockPaperScissorsApp
 {
     class   ComputerPlayer : Player
     {
+        public ComputerPlayer(string name)
+        {
+            this.name = name;
+        }
+        public override int MakeMove()
+        {
+            
+            throw new NotImplementedException();
+        }
     }
 }
