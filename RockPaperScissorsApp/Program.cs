@@ -13,24 +13,42 @@ namespace RockPaperScissorsApp
             /*Need to create base player class that makes move
              * need program class to assign value MakeMove() function
              * need to establish relationship between values
-             *  
-             * 
+             *  need to develop round score
+             * need to develop match score
              */
             
             HumanPlayer User = new HumanPlayer();
             ComputerPlayer Fred = new ComputerPlayer("Fred");
-            int userScore = User.MakeMove();
-            User.PrintPlayerChoice(User.name, userScore, User.optionsList);
-            Console.ReadKey();
-            int computerScore = Fred.MakeMove();
-            Fred.PrintPlayerChoice(Fred.name, computerScore, Fred.optionsList);
-            Console.ReadKey();
-            int value = CompareValues(userScore, computerScore);
-            RoundScore(userScore, computerScore);
-            Console.WriteLine(value);
+            GameRunner();
+            void GameRunner()
+            {
+                int playerRoundScore = 0;
+                int compRoundScore = 0;
+                while (playerRoundScore < 3 && compRoundScore < 3)
+                {
+                    int userScore = User.MakeMove();
+                    User.PrintPlayerChoice(User.name, userScore, User.optionsList);
+                    Console.ReadKey();
+                    int computerScore = Fred.MakeMove();
+                    Fred.PrintPlayerChoice(Fred.name, computerScore, Fred.optionsList);
+                    Console.ReadKey();
+                    int value = CompareValues(userScore, computerScore);
+                    int score = RoundScore(userScore, computerScore);
+                    if(score == 1)
+                    {
+                        playerRoundScore++;
+                    }
+                    else if(score == 2)
+                    {
+                        compRoundScore++;
+                    }
+                }
+                PrintVictor(playerRoundScore, compRoundScore);
+                Console.ReadKey();
+                GameRunner();
+            }
 
-            //Console.WriteLine(userScore);
-            //Console.ReadLine();
+            
             /*
             d = (5 + a - b) % 5. Then:
             d = 1 or d = 3 => a wins
@@ -62,15 +80,15 @@ namespace RockPaperScissorsApp
             {
                 if (winnerInt == 1)
                     {
-                        Console.WriteLine(User.optionsList[userInt].ToUpper() + " beats " + Fred.optionsList[compInt].ToUpper() + ". " + User.name + " Wins!");
+                        Console.WriteLine(User.optionsList[userInt].ToUpper() + " beats " + Fred.optionsList[compInt].ToUpper() + ". " + User.name + " Wins the round!");
                     }
                 else if (winnerInt == 2)
                     {
-                    Console.WriteLine(Fred.optionsList[compInt].ToUpper() + " beats " + User.optionsList[userInt].ToUpper() + ". " + Fred.name + " Wins!");
+                    Console.WriteLine(Fred.optionsList[compInt].ToUpper() + " beats " + User.optionsList[userInt].ToUpper() + ". " + Fred.name + " Wins the round!");
                     }
                 else if (winnerInt == 0)
                 {
-                    Console.WriteLine(User.optionsList[userInt].ToUpper() + " is even with " + Fred.optionsList[compInt].ToUpper() + ". TIE!!!");
+                    Console.WriteLine(User.optionsList[userInt].ToUpper() + " is even with " + Fred.optionsList[compInt].ToUpper() + ". TIE ROUND!!!");
                 }
             }
 
@@ -81,6 +99,17 @@ namespace RockPaperScissorsApp
                 PrintRoundVictor(userInt, compInt, winnerValue);
                 Console.ReadKey();
                 return winnerValue;
+            }
+            void PrintVictor(int playerRoundScore, int computerRoundScore)
+            {
+                if(playerRoundScore == 3)
+                {
+                    Console.WriteLine("Congratulations " + User.name + " ! You Win!! Press any key to restart game!");
+                }
+                if(computerRoundScore == 3)
+                {
+                    Console.WriteLine("Sorry, you lose to " + Fred.name + ". Press any key to restart game!");
+                }
             }
             
         }
