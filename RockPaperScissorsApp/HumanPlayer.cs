@@ -8,27 +8,38 @@ namespace RockPaperScissorsApp
 {
     class HumanPlayer : Player
     {
-        public HumanPlayer()
+        GestureCollection GestureGame = new GestureCollection();
+        public HumanPlayer(int playerNumber)
         {
-            this.name = GetName();
+            this.name = GetName(playerNumber);
         }
-        public string GetName()
+        public string GetName(int playerNumber)
         {
-            Console.WriteLine("Please Enter Your Name");
+            Console.WriteLine("Player "+ playerNumber+ ": Please Enter Your Name");
             string name = Console.ReadLine();
             return name;
         }
-        public string GetMove()
+        public string GetMove(string playerName)
         {
-            Console.WriteLine("Please enter 'Rock', 'Paper', 'Scissors', 'Lizard', or 'Spock'");
+            Console.WriteLine(playerName+": Please enter "+GestureGame.gestures[0].Name+", "+ GestureGame.gestures[1].Name + ", "+ GestureGame.gestures[2].Name + ", "+ GestureGame.gestures[3].Name
+            + ", or "+ GestureGame.gestures[4].Name + ".");
             string move = Console.ReadLine();
             return move.ToLower();
         }
-        public bool Validator(string input, List<string> options)
+        public List<string> GetGestureNameList()
+        {
+            List<string> gestureNames = new List<string>();
+            for(int i = 0; i<GestureGame.gestures.Count; i++)
+            {
+                gestureNames.Add((GestureGame.gestures[i].Name).ToLower());
+            }
+            return gestureNames;
+        }
+        public bool Validator(string input, List<string> gestureNames)
         {
 
 
-            if (options.Contains(input))
+            if (gestureNames.Contains(input))
             {
                 return true;
             }
@@ -39,14 +50,13 @@ namespace RockPaperScissorsApp
             }
         }
 
-        public int NumberAssign(string input, List<string> options)
+        public int NumberAssign(string input)
         {
-            for (int i = 0; i < options.Count; i++)
+            for (int i = 0; i < GestureGame.gestures.Count; i++)
             {
-                if (input == options[i])
+                if (input == (GestureGame.gestures[i].Name).ToLower())
                 {
-                    int result = i;
-                    return result;
+                    return GestureGame.gestures[i].CallID;
                 }
 
             }
@@ -55,10 +65,11 @@ namespace RockPaperScissorsApp
 
         public override int MakeMove()
         {
-            string move = GetMove();
-            if (Validator(move, base.optionsList) == true)
+            List<string> gestureNames = GetGestureNameList();
+            string move = GetMove(this.name);
+            if (Validator(move, gestureNames) == true)
             {
-                int numberScore = NumberAssign(move, base.optionsList);
+                int numberScore = NumberAssign(move);
                 return numberScore;
             }
             else
