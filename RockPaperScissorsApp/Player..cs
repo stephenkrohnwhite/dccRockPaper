@@ -8,6 +8,8 @@ namespace RockPaperScissorsApp
 {
     abstract class Player
     {
+        GestureCollection List = new GestureCollection();
+       
         public string name;
         public abstract int MakeMove();
         public List<string> optionsList = new List<string>()
@@ -18,9 +20,9 @@ namespace RockPaperScissorsApp
             "lizard",
             "spock",
         };
-        public void PrintPlayerChoice(string name, int input, List<string> options)
+        public void PrintPlayerChoice(string name, int input)
         {
-            string selection = (options[input]).ToUpper();
+            string selection = (List.gestures[input].Name).ToUpper();
             Console.WriteLine(name+" chose "+selection+"!");
         }
     }

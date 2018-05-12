@@ -83,6 +83,7 @@ namespace RockPaperScissorsApp
             }
             void CPUGameRunner()
             {
+                GestureCollection List = new GestureCollection();
                 ComputerPlayer Fred = new ComputerPlayer("Fred");
                 int playerRoundScore = 0;
                 int compRoundScore = 0;
@@ -90,11 +91,11 @@ namespace RockPaperScissorsApp
                 {
                     int userScore = User.MakeMove();
                     //replace optionsList
-                    User.PrintPlayerChoice(User.name, userScore, User.optionsList);
+                    User.PrintPlayerChoice(User.name, userScore);
                     Console.ReadKey();
                     //replace optionsList
                     int computerScore = Fred.MakeMove();
-                    Fred.PrintPlayerChoice(Fred.name, computerScore, Fred.optionsList);
+                    Fred.PrintPlayerChoice(Fred.name, computerScore);
                     Console.ReadKey();
                     int value = CompareValues(userScore, computerScore);
                     int score = RoundScore(userScore, computerScore, User.name, Fred.name);
@@ -113,6 +114,7 @@ namespace RockPaperScissorsApp
             }
             void PVPGameRunner()
             {
+                GestureCollection List = new GestureCollection();
                 HumanPlayer PlayerTwo = new HumanPlayer(2);
                 int playerRoundScore = 0;
                 int playerTwoRoundScore = 0;
@@ -120,14 +122,12 @@ namespace RockPaperScissorsApp
                 {
                     int userScore = User.MakeMove();
                     //replace optionsList
-                    User.PrintPlayerChoice(User.name, userScore, User.optionsList);
+                    User.PrintPlayerChoice(User.name, userScore);
                     Console.ReadKey();
-                    Console.Clear();
                     int userTwoScore = PlayerTwo.MakeMove();
                     //replace optionsList
-                    PlayerTwo.PrintPlayerChoice(PlayerTwo.name, userTwoScore, User.optionsList);
+                    PlayerTwo.PrintPlayerChoice(PlayerTwo.name, userTwoScore);
                     Console.ReadKey();
-                    Console.Clear();
                     int value = CompareValues(userScore, userTwoScore);
                     int score = RoundScore(userScore, userTwoScore, User.name, PlayerTwo.name);
                     if (score == 1)
@@ -156,23 +156,53 @@ namespace RockPaperScissorsApp
                 int diff = (5 + userValue - secondPlayerValue) % 5;
                 return diff;
             }
-            int Winner(int difference)
+            int Winner(int difference, int playerOneChoice, int playerTwoChoice)
             {
                 switch(difference)
                 {
                     case 1:
                     case 3:
-                        return 1;
+                        return playerOneChoice;
                     case 2:
                     case 4:
-                        return 2;
+                        return playerTwoChoice;
                     case 0:
                         return 0;
                     default:
                         return 0;
                 }
+                
             }
-            void PrintRoundVictor(int userInt, int compInt, int winnerInt, string playerOne, string playerTwo)
+            int Loser(int difference, int playerOneChoice, int playerTwoChoice)
+            {
+                switch (difference)
+                {
+                    case 1:
+                    case 3:
+                        return playerTwoChoice;
+                    case 2:
+                    case 4:
+                        return playerOneChoice;
+                    case 0:
+                        return 0;
+                    default:
+                        return 0;
+                }
+
+            }
+            string PlayerRoundWinner(int winnerValueID, int playerOneSelection, int playerTwoSelection, string playerOneName, string playerTwoName)
+            {
+                if (winnerValueID == playerOneSelection)
+                {
+                    return playerOneName;
+                }
+                else if (winnerValueID == playerTwoSelection)
+                {
+                    return playerTwoName;
+                }
+                else return "error";
+            }
+           /* void PrintRoundVictor(int userInt, int compInt, int winnerInt, string playerOne, string playerTwo)
             {
                 if (winnerInt == 1)
                     {
@@ -187,14 +217,29 @@ namespace RockPaperScissorsApp
                     Console.WriteLine(GestureList.gestures[userInt].Name.ToUpper() + " is even with " + GestureList.gestures[compInt].Name.ToUpper() + ". TIE ROUND!!!");
                 }
             }
-
-            int RoundScore(int userInt, int compInt, string playerOne, string playerTwo)
+            */
+            int WinnerPlayerNumber(string roundVictor, string playerOne, string playerTwo)
             {
-                int diff = CompareValues(userInt, compInt);
-                int winnerValue = Winner(diff);
-                PrintRoundVictor(userInt, compInt, winnerValue, playerOne, playerTwo);
-                Console.ReadKey();
-                return winnerValue;
+                if (roundVictor == playerOne)
+                {
+                    return 1;
+                }
+                else if (roundVictor == playerTwo)
+                {
+                    return 2;
+                }
+                else return 0;
+            }
+            int RoundScore(int playerOneInt, int playerTwoInt, string playerOne, string playerTwo)
+            {
+                GestureCollection List = new GestureCollection();
+                int diff = CompareValues(playerOneInt, playerTwoInt);
+                int winnerValue = Winner(diff, playerOneInt, playerTwoInt);
+                int loserValue = Loser(diff, playerOneInt, playerTwoInt);
+                string roundWinner = PlayerRoundWinner(winnerValue, playerOneInt, playerTwoInt, playerOne, playerTwo);
+                List.PrintRoundWinner(winnerValue, loserValue, roundWinner);
+                int winnerID = WinnerPlayerNumber(roundWinner, playerOne, playerTwo);
+                return winnerID;
             }
             void PrintVictor(int playerRoundScore, int playerTwoRoundScore, string playerOneName, string playerTwoName)
             {
