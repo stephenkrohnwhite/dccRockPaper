@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game.cs" />
     <Compile Include="GestureCollection.cs" />
     <Compile Include="Gestures.cs" />
     <Compile Include="ComputerPlayer.cs" />
